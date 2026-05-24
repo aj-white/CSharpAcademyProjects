@@ -1,4 +1,4 @@
-namespace TSCA.OOP.LibraryManagementSystem;
+namespace TCSA.OOP.LibraryManagementSystem;
 
 internal class Enums
 {

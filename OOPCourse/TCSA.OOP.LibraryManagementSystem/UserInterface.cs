@@ -1,7 +1,7 @@
 using Spectre.Console;
-using static TSCA.OOP.LibraryManagementSystem.Enums;
+using static TCSA.OOP.LibraryManagementSystem.Enums;
 
-namespace TSCA.OOP.LibraryManagementSystem;
+namespace TCSA.OOP.LibraryManagementSystem;
 
 internal class UserInterface
 {
