@@ -2,7 +2,7 @@ using Spectre.Console;
 using TCSA.OOP.LibraryManagementSystem.Models;
 namespace TCSA.OOP.LibraryManagementSystem.Controllers;
 
-internal class NewspaperController : IBaseController
+internal class NewspaperController : BaseController, IBaseController
 {
     public void ViewItems()
     {
@@ -29,7 +29,7 @@ internal class NewspaperController : IBaseController
         }
 
         AnsiConsole.Write(table);
-        AnsiConsole.MarkupLine("Press any key to continue");
+        DisplayMessage("Press any key to continue");
         Console.ReadKey();
     }
     public void AddItem()
@@ -41,7 +41,7 @@ internal class NewspaperController : IBaseController
 
         if (MockDatabase.LibraryItems.OfType<Newspaper>().Any(m => m.Name.Equals(title, StringComparison.OrdinalIgnoreCase)))
         {
-            AnsiConsole.MarkupLine("[red]This newspaper alreadt exists.[/]");
+            DisplayMessage("This newspaper alreadt exists.", "red");
         }
         else
         {
@@ -54,10 +54,10 @@ internal class NewspaperController : IBaseController
             );
 
             MockDatabase.LibraryItems.Add(newNewspaper);
-            AnsiConsole.MarkupLine("[green]Newspaper has been added.[/]");
+            DisplayMessage("Newspaper has been added.", "green");
         }
 
-        AnsiConsole.MarkupLine("Press any key to continue");
+        DisplayMessage("Press any key to continue");
         Console.ReadKey();
     }
     public void DeleteItem()
@@ -76,16 +76,25 @@ internal class NewspaperController : IBaseController
             .AddChoices(MockDatabase.LibraryItems.OfType<Newspaper>())
         );
 
-        if (MockDatabase.LibraryItems.Remove(newspaperToDelete))
+        if (ConfirmDeletion(newspaperToDelete.Name))
         {
-            AnsiConsole.MarkupLine("[red]newspaper has been deleted.[/]");
+            if (MockDatabase.LibraryItems.Remove(newspaperToDelete))
+            {
+                DisplayMessage("Newspaper has been deleted.", "red");
+            }
+            else
+            {
+                DisplayMessage("Newspaper not found", "red");
+            }
+
         }
         else
         {
-            AnsiConsole.MarkupLine("[red]newspaper not found[/]");
+            DisplayMessage("Deletion cancelled");
         }
 
-        AnsiConsole.MarkupLine("Press any key to continue");
+
+        DisplayMessage("Press any key to continue");
         Console.ReadKey();
     }
 }

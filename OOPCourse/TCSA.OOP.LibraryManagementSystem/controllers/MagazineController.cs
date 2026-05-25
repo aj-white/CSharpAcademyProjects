@@ -2,7 +2,7 @@ using Spectre.Console;
 using TCSA.OOP.LibraryManagementSystem.Models;
 namespace TCSA.OOP.LibraryManagementSystem.Controllers;
 
-internal class MagazineController : IBaseController
+internal class MagazineController : BaseController, IBaseController
 {
     public void ViewItems()
     {
@@ -31,7 +31,7 @@ internal class MagazineController : IBaseController
         }
 
         AnsiConsole.Write(table);
-        AnsiConsole.MarkupLine("Press any key to continue");
+        DisplayMessage("Press any key to continue");
         Console.ReadKey();
     }
     public void AddItem()
@@ -44,7 +44,7 @@ internal class MagazineController : IBaseController
 
         if (MockDatabase.LibraryItems.OfType<Magazine>().Any(m => m.Name.Equals(title, StringComparison.OrdinalIgnoreCase)))
         {
-            AnsiConsole.MarkupLine("[red]This magazibe alreadt exists.[/]");
+            DisplayMessage("This magazine already exists.", "red");
         }
         else
         {
@@ -58,17 +58,17 @@ internal class MagazineController : IBaseController
             );
 
             MockDatabase.LibraryItems.Add(newMagazine);
-            AnsiConsole.MarkupLine("[green]Magazine has been added.[/]");
+            DisplayMessage("Magazine has been added.", "green");
         }
 
-        AnsiConsole.MarkupLine("Press any key to continue");
+        DisplayMessage("Press any key to continue");
         Console.ReadKey();
     }
     public void DeleteItem()
     {
         if (MockDatabase.LibraryItems.OfType<Magazine>().Count() == 0)
         {
-            AnsiConsole.MarkupLine("[red]No magazines available to delete.[/]");
+            DisplayMessage("No magazines available to delete.", "red");
             Console.ReadKey();
             return;
         }
@@ -80,16 +80,25 @@ internal class MagazineController : IBaseController
             .AddChoices(MockDatabase.LibraryItems.OfType<Magazine>())
         );
 
-        if (MockDatabase.LibraryItems.Remove(magazineToDelete))
+        if (ConfirmDeletion(magazineToDelete.Name))
         {
-            AnsiConsole.MarkupLine("[red]Magazine has been deleted.[/]");
+            if (MockDatabase.LibraryItems.Remove(magazineToDelete))
+            {
+                DisplayMessage("Magazine has been deleted.", "red");
+            }
+            else
+            {
+                DisplayMessage("Magazine not found!", "red");
+            }
+
         }
         else
         {
-            AnsiConsole.MarkupLine("[red]Magazine not found[/]");
+            DisplayMessage("Deletion cancelled");
         }
 
-        AnsiConsole.MarkupLine("Press any key to continue");
+
+        DisplayMessage("Press any key to continue");
         Console.ReadKey();
     }
 }
