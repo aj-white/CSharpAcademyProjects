@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/MathsCourse/">
+    <Project Path="MathsCourse/TCSA.MathsGame/TCSA.MathsGame.csproj" />
+  </Folder>
   <Folder Name="/OOPCourse/">
     <Project Path="OOPCourse/TCSA.OOP.LibraryManagementSystem/TCSA.OOP.LibraryManagementSystem.csproj" />
   </Folder>
