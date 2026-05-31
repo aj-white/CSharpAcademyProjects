@@ -1,4 +1,5 @@
-﻿using TCSA.MathsGame.Config;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TCSA.MathsGame.Config;
 using TCSA.MathsGame.Services;
 using TCSA.MathsGame.UI;
 
@@ -10,10 +11,13 @@ var config = GameSettings.Builder
     .WithHardDifficultyRange(50, 100)
     .Build();
 
-var questionGenerator = new MathsQuestionGenerator(config);
-var historyService = new GameHistoryService();
-var historyUI = new HistoryUI(historyService);
-var gameUI = new GameUI(questionGenerator, historyService);
-var menuUI = new MenuUI(gameUI, historyUI);
+var services = new ServiceCollection()
+    .AddSingleton(config)
+    .AddSingleton<GameHistoryService>()
+    .AddSingleton<MathsQuestionGenerator>()
+    .AddSingleton<HistoryUI>()
+    .AddSingleton<GameUI>()
+    .AddSingleton<MenuUI>()
+    .BuildServiceProvider();
 
-menuUI.Run();
+services.GetRequiredService<MenuUI>().Run();
